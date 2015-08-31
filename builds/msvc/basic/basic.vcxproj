@@ -14,6 +14,7 @@
     <ClCompile Include="..\..\..\src\basic\err.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\basic\mutex.h" />
     <ClInclude Include="..\..\..\src\basic\err.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
