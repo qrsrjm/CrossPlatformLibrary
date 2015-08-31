@@ -13,8 +13,20 @@
 
 void safe_abort(const char *errMsg);
 
+// 基本的断言，与assert功能类似
+#define base_assert(x) \
+	do \
+	{ \
+		if (!(x)) \
+		{ \
+			fprintf(stderr, "Assertion failed: %s (%s:%d)\n", #x, __FILE__, __LINE__); \
+			safe_abort(#x); \
+		} \
+	} while (false)
+
 #ifdef WIN32
 
+// 将GetLastError对应的错误代码转换为错误信息
 void win_error(char *buffer, size_t bufferSize);
 
 // Windows下的GetLastError样式的错误断言
@@ -31,17 +43,6 @@ void win_error(char *buffer, size_t bufferSize);
 	} while (false)
 
 #endif
-
-// 基本的断言，与assert功能类似
-#define base_assert(x) \
-	do \
-	{ \
-		if (!(x)) \
-		{ \
-			fprintf(stderr, "Assertion failed: %s (%s:%d)\n", #x, __FILE__, __LINE__); \
-			safe_abort(#x); \
-		} \
-	} while (false)
 
 // errno样式的错误断言
 #define errno_assert(x) \
