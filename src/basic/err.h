@@ -11,73 +11,88 @@
 #include "windows.h"
 #endif
 
-void safe_abort(const char *errMsg);
+void SafeAbort(const char *errMsg);
 
-// åŸºæœ¬çš„æ–­è¨€ï¼Œä¸ŽassertåŠŸèƒ½ç±»ä¼¼
-#define base_assert(x) \
+// »ù±¾µÄ¶ÏÑÔ£¬Óëassert¹¦ÄÜÀàËÆ
+#define BASE_ASSERT(x) \
 	do \
 	{ \
 		if (!(x)) \
 		{ \
 			fprintf(stderr, "Assertion failed: %s (%s:%d)\n", #x, __FILE__, __LINE__); \
-			safe_abort(#x); \
+			SafeAbort(#x); \
 		} \
 	} while (false)
 
 #ifdef WIN32
 
-// å°†GetLastErrorå¯¹åº”çš„é”™è¯¯ä»£ç è½¬æ¢ä¸ºé”™è¯¯ä¿¡æ¯
-void win_error(char *buffer, size_t bufferSize);
+// ½«GetLastError¶ÔÓ¦µÄ´íÎó´úÂë×ª»»Îª´íÎóÐÅÏ¢
+void WinError(char *buffer, size_t bufferSize);
 
-// Windowsä¸‹çš„GetLastErroræ ·å¼çš„é”™è¯¯æ–­è¨€
-#define win_assert(x) \
+// WindowsÏÂµÄGetLastErrorÑùÊ½µÄ´íÎó¶ÏÑÔ
+#define WIN_ASSERT(x) \
 	do \
 	{ \
 		if (!(x)) \
 		{ \
 			char errStr[256]; \
-			win_error(errStr, 256); \
+			WinError(errStr, 256); \
 			fprintf(stderr, "Assertion failed: %s (%s:%d)\n", errStr, __FILE__, __LINE__); \
-			safe_abort(errStr); \
+			SafeAbort(errStr); \
 		} \
 	} while (false)
 
-#endif
+// windowsÏÂerrnoÑùÊ½µÄ´íÎó¶ÏÑÔ
+#define ERRNO_ASSERT(x) \
+	do \
+	{ \
+		if (!(x)) \
+		{ \
+			char errStr[256]; \
+			strerror_s(errStr, 256, errno); \
+			fprintf(stderr, "%s (%s:%d)\n", errStr, __FILE__, __LINE__); \
+			SafeAbort(errStr); \
+		} \
+	} while (false)
 
-// errnoæ ·å¼çš„é”™è¯¯æ–­è¨€
-#define errno_assert(x) \
+#else
+
+// LinuxÏÂerrnoÑùÊ½µÄ´íÎó¶ÏÑÔ
+#define ERRNO_ASSERT(x) \
 	do \
 	{ \
 		if (!(x)) \
 		{ \
 			const char *errStr = strerror(errno); \
 			fprintf(stderr, "%s (%s:%d)\n", errStr, __FILE__, __LINE__); \
-			safe_abort(errStr); \
+			SafeAbort(errStr); \
 		} \
 	} while (false)
 
-// POSIXæ ·å¼çš„é”™è¯¯æ–­è¨€
-#define posix_assert(x) \
+#endif
+
+// POSIXÑùÊ½µÄ´íÎó¶ÏÑÔ
+#define POSIX_ASSERT(x) \
 	do \
 	{ \
 		if (x) \
 		{ \
 			const char *errStr = strerror(x); \
 			fprintf(stderr, "%s (%s:%d)\n", errStr, __FILE__, __LINE__); \
-			safe_abort(errStr); \
+			SafeAbort(errStr); \
 		} \
 	} while (false)
 
 
-// å†…å­˜åˆ†é…å¤±è´¥çš„æ–­è¨€
-#define alloc_assert(x) \
+// ÄÚ´æ·ÖÅäÊ§°ÜµÄ¶ÏÑÔ
+#define ALLOC_ASSERT(x) \
 	do \
 	{ \
 		if (!(x)) \
 		{ \
 			fprintf(stderr, "FATAL ERROR: OUT OF MEMORY (%s:%d)\n", \
 			__FILE__, __LINE__); \
-			safe_abort("FATAL ERROR: OUT OF MEMORY"); \
+			SafeAbort("FATAL ERROR: OUT OF MEMORY"); \
 		}\
 	} while (false)
 

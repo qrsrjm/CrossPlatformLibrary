@@ -1,6 +1,6 @@
 #include "err.h"
 
-void safe_abort(const char *errMsg)
+void SafeAbort(const char *errMsg)
 {
 #ifdef WIN32
 	ULONG_PTR extra_info[1];
@@ -14,13 +14,13 @@ void safe_abort(const char *errMsg)
 
 #ifdef WIN32
 
-void win_error(char *buffer, size_t bufferSize)
+void WinError(char *buffer, size_t bufferSize)
 {
 	DWORD errcode = GetLastError();
 	DWORD rc = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS, NULL, errcode, MAKELANGID(LANG_NEUTRAL,
 		SUBLANG_DEFAULT), buffer, (DWORD)bufferSize, NULL);
-	base_assert(rc);
+	BASE_ASSERT(rc);
 }
 
 #endif

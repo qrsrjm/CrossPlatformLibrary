@@ -11,15 +11,15 @@ class Mutex
 public:
 	Mutex() { InitializeCriticalSection(&_critSection); }
 	~Mutex() { DeleteCriticalSection(&_critSection); }
-	void lock(){ EnterCriticalSection(&_critSection); }
-	void unlock(){ LeaveCriticalSection(&_critSection); }
+	void Lock() const { EnterCriticalSection(&_critSection); }
+	void Unlock() const { LeaveCriticalSection(&_critSection); }
 
 private:
 	Mutex(const Mutex&);
 	const Mutex &operator = (const Mutex&);
 
 private:
-	CRITICAL_SECTION _critSection;
+	mutable CRITICAL_SECTION _critSection;
 };
 
 #ifndef ETIMEDOUT
@@ -32,20 +32,20 @@ public:
 	CondMutex()
 	{
 		m_cond = CreateEvent(NULL, FALSE, FALSE, NULL);
-		win_assert(0 != m_cond);
+		WIN_ASSERT(0 != m_cond);
 	}
 
 	~CondMutex()
 	{
 		BOOL ret = CloseHandle(m_cond);
-		win_assert(TRUE == ret);
+		WIN_ASSERT(TRUE == ret);
 	}
 
-	int wait_with_timeout(Mutex *mutex, int mill) const 
+	int WaitWithTimeout(Mutex *mutex, int mill) const 
 	{
-		mutex->unlock();
+		mutex->Unlock();
 		DWORD ret = WaitForSingleObject(m_cond, mill);
-		mutex->lock();
+		mutex->Lock();
 		if (WAIT_OBJECT_0 == ret)
 		{
 			return 0;
@@ -55,30 +55,30 @@ public:
 			return ETIMEDOUT;
 		}
 
-		win_assert(0);
+		WIN_ASSERT(0);
 
 		return ret;
 	}
 
-	int wait(Mutex *mutex) const
+	int Wait(Mutex *mutex) const
 	{
-		mutex->unlock();
+		mutex->Unlock();
 		DWORD ret = WaitForSingleObject(m_cond, INFINITE);
-		mutex->lock();
+		mutex->Lock();
 		if (WAIT_OBJECT_0 == ret)
 		{
 			return 0;
 		}
 
-		win_assert(0);
+		WIN_ASSERT(0);
 
 		return ret;
 	}
 
-	void signal() const
+	void Signal() const
 	{
 		BOOL ret = SetEvent(m_cond);
-		win_assert(TRUE == ret);
+		WIN_ASSERT(TRUE == ret);
 	}
 
 private:
@@ -97,39 +97,39 @@ public:
 		m_count = 0;
 		m_owner = 0;
 		int ret = pthread_mutex_init(&m_mutex, NULL);
-		posix_assert(ret);
+		POSIX_ASSERT(ret);
 	}
 
 	~Mutex()
 	{
 		int ret = pthread_mutex_destroy(&m_mutex);
-		posix_assert(ret);
+		POSIX_ASSERT(ret);
 	}
 
-	void lock() const
+	void Lock() const
 	{
 		pthread_t self = pthread_self();
 		if (m_owner != self)
 		{
 			int ret = pthread_mutex_lock(&m_mutex);
-			posix_assert(ret);
+			POSIX_ASSERT(ret);
 			m_owner = self;
 		}
 		m_count++;
 	}
 
-	void unlock() const
+	void Unlock() const
 	{
-		base_assert(pthread_self() == m_owner);
+		BASE_ASSERT(pthread_self() == m_owner);
 		if (--m_count == 0)
 		{
 			m_owner = 0;
 			int ret = pthread_mutex_unlock(&m_mutex);
-			posix_assert(ret);
+			POSIX_ASSERT(ret);
 		}
 	}
 
-	pthread_mutex_t *get_mutex()
+	pthread_mutex_t *GetMutex()
 	{
 		return &m_mutex;
 	}
@@ -150,32 +150,44 @@ public:
 	CondMutex()
 	{
 		int ret = pthread_cond_init(&m_cond, NULL);
-		posix_assert(ret);
+		POSIX_ASSERT(ret);
 	}
 
 	~CondMutex()
 	{
 		int ret = pthread_cond_destroy(&m_cond);
-		posix_assert(ret);
+		POSIX_ASSERT(ret);
 	}
 
-	int wait_with_timeout(Mutex *mutex, int mill) const
+	int WaitWithTimeout(Mutex *mutex, int mill) const
 	{
 		struct timespec tv;
 		tv.tv_sec = mill / 1000;
 		tv.tv_nsec = (mill % 1000) * 1000;
-		return pthread_cond_timedwait(&m_cond, mutex->get_mutex(), &tv);
+		int ret = pthread_cond_timedwait(&m_cond, mutex->GetMutex(), &tv);
+		if (0 != ret && ETIMEDOUT != ret)
+		{
+			POSIX_ASSERT(ret);
+		}
+
+		return ret;
 	}
 
-	int wait(Mutex *mutex) const
+	int Wait(Mutex *mutex) const
 	{
-		return pthread_cond_wait(&m_cond, mutex->get_mutex());
+		int ret = pthread_cond_wait(&m_cond, mutex->GetMutex());
+		if (0 != ret && ETIMEDOUT != ret)
+		{
+			POSIX_ASSERT(ret);
+		}
+
+		return ret;
 	}
 
-	void signal() const
+	void Signal() const
 	{
 		int ret = pthread_cond_signal(&m_cond);
-		posix_assert(ret);
+		POSIX_ASSERT(ret);
 	}
 
 private:
@@ -187,8 +199,8 @@ private:
 class CritSectLock
 {
 public:
-	CritSectLock(Mutex& mx) :m_mutex(mx) { m_mutex.lock(); }
-	~CritSectLock(){ m_mutex.unlock(); }
+	CritSectLock(Mutex& mx) :m_mutex(mx) { m_mutex.Lock(); }
+	~CritSectLock(){ m_mutex.Unlock(); }
 
 private:
 	CritSectLock(const CritSectLock& critical);
