@@ -2,11 +2,12 @@
 #define BASIC_INCLUDE_H
 
 #include "err.h"
+#include "base_def.h"
 
 #ifdef WIN32
 #include <windows.h>
 
-class Mutex
+class BASE_EXPORT Mutex
 {
 public:
 	Mutex() { InitializeCriticalSection(&_critSection); }
@@ -26,7 +27,7 @@ private:
 #define ETIMEDOUT WAIT_TIMEOUT
 #endif
 
-class CondMutex
+class BASE_EXPORT CondMutex
 {
 public:
 	CondMutex()
@@ -89,7 +90,7 @@ private:
 
 #include <pthread.h>
 
-class Mutex
+class BASE_EXPORT Mutex
 {
 public:
 	Mutex()
@@ -144,7 +145,7 @@ private:
 	mutable pthread_t m_owner;
 };
 
-class CondMutex
+class BASE_EXPORT CondMutex
 {
 public:
 	CondMutex()
@@ -196,7 +197,7 @@ private:
 
 #endif
 
-class CritSectLock
+class BASE_EXPORT CritSectLock
 {
 public:
 	CritSectLock(Mutex& mx) :m_mutex(mx) { m_mutex.Lock(); }

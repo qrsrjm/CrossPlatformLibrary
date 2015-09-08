@@ -2,10 +2,12 @@
 #define THREAD_BASE_H
 
 #include "mutex.h"
+#include "base_def.h"
 
 #ifdef WIN32
 #include <windows.h>
 #else
+#include <unistd.h> 
 #include <pthread.h>
 #endif
 
@@ -13,9 +15,9 @@
 #define INFINITE 0xFFFFFFFF
 #endif
 
-void SleepMill(int ms);
+void BASE_EXPORT SleepMill(int ms);
 
-class ThreadBase
+class BASE_EXPORT ThreadBase
 {
 public:
 	ThreadBase();
