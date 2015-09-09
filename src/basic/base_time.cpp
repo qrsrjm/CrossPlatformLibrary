@@ -7,6 +7,8 @@
 
 #define _MAX__TIME64_T     0x793406fffLL 
 
+// 参考Linux源代码中的实现
+// 详解访问：http://blog.csdn.net/axx1611/article/details/1792827
 static inline unsigned long linux_mktime (
               unsigned int year, unsigned int mon,
               unsigned int day, unsigned int hour,
@@ -46,10 +48,10 @@ Time::Time(int nYear, int nMonth, int nDay, int nHour, int nMin, int nSec)
         long timezone;
         _get_timezone(&timezone);
         m_time += timezone;
-#else // _WIN32
+#else
         tzset ();
         m_time += timezone;        
-#endif // _WIN32
+#endif
     }
 }
 
@@ -73,7 +75,7 @@ void Time::GetLocalTm(struct tm* lc) const
 #ifdef _WIN32
     localtime_s(lc, &m_time);
 #else
-    *lc = *localtime(&m_time);
+	localtime_r(&m_time, lc);
 #endif
 }
 
@@ -82,7 +84,7 @@ void Time::GetGmTm (struct tm* gm) const
 #ifdef _WIN32
     gmtime_s(gm, &m_time);
 #else
-    *gm = *gmtime(&m_time);
+	gmtime_r(&m_time, gm);
 #endif
 }
 

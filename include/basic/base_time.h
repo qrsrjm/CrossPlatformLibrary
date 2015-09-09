@@ -1,5 +1,6 @@
 #ifndef BASE_TIME_H
 #define BASE_TIME_H
+
 #include "base_def.h"
 #include <time.h>
 #include <string>
@@ -28,8 +29,8 @@ public:
     int GetMinutes() const;
     int GetSeconds() const;
 
-    TimeSpan operator - (const TimeSpan& timeSpan) const;
-    TimeSpan operator + (const TimeSpan& timeSpan) const;
+	TimeSpan operator + (const TimeSpan& timeSpan) const;
+	TimeSpan operator - (const TimeSpan& timeSpan) const;
     const TimeSpan& operator += (const TimeSpan& timeSpan);
     const TimeSpan& operator -= (const TimeSpan& timeSpan);
     bool operator == (const TimeSpan& timeSpan) const;
@@ -57,8 +58,8 @@ public:
     void GetUTCTime(int &nYear, int &nMonth, int &nDay, int &nHour, int &nMin, int &nSec) const;
     void GetLocalTm(struct tm* localtime) const;
     void GetGmTm(struct tm* gm) const;
-    string ToString() const;
-    string ToUTCString() const;
+	string ToString() const;
+	string ToUTCString() const;
 	string DateToString() const;
 	string TimeToString() const;
 
@@ -160,14 +161,14 @@ inline int TimeSpan::GetSeconds() const
     return (int)(GetTotalSeconds() - GetTotalMinutes() * 60); 
 }
 
+inline TimeSpan TimeSpan::operator + (const TimeSpan& timeSpan) const
+{
+	return TimeSpan(m_timeSpan + timeSpan.m_timeSpan);
+}
+
 inline TimeSpan TimeSpan::operator - (const TimeSpan& timeSpan) const
 { 
     return TimeSpan(m_timeSpan - timeSpan.m_timeSpan); 
-}
-
-inline TimeSpan TimeSpan::operator + (const TimeSpan& timeSpan) const
-{ 
-    return TimeSpan(m_timeSpan + timeSpan.m_timeSpan); 
 }
 
 inline const TimeSpan& TimeSpan::operator += (const TimeSpan& timeSpan)
@@ -219,200 +220,200 @@ inline time_t Time::GetTime() const
 
 inline int Time::GetYear() const
 {
+	tm t;
 #ifdef _WIN32
-    tm t;
     localtime_s(&t, &m_time);
-    return t.tm_year + 1900; 
 #else
-    return (localtime(&m_time)->tm_year) + 1900;
+	localtime_r(&m_time, &t);
 #endif
+	return t.tm_year + 1900; 
 }
 
 inline int Time::GetMonth() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     localtime_s(&t, &m_time);
-    return t.tm_mon + 1; 
 #else
-    return localtime(&m_time)->tm_mon + 1; 
+	localtime_r(&m_time, &t);
 #endif
+	return t.tm_mon + 1;
 }
 
 inline int Time::GetDay() const
 {
+	tm t;
 #ifdef _WIN32
-    tm t;
     localtime_s(&t, &m_time);
-    return t.tm_mday + 1; 
 #else
-    return localtime(&m_time)->tm_mday; 
+	localtime_r(&m_time, &t);
 #endif 
+	return t.tm_mday; 
 }
 
 inline int Time::GetHour() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     localtime_s(&t, &m_time);
-    return t.tm_hour + 1; 
 #else
-    return localtime(&m_time)->tm_hour; 
+	localtime_r(&m_time, &t);
 #endif
+	return t.tm_hour; 
 }
 
 inline int Time::GetMinute() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     localtime_s(&t, &m_time);
-    return t.tm_min + 1; 
 #else
-    return localtime(&m_time)->tm_min;
+	localtime_r(&m_time, &t);
 #endif 
+	return t.tm_min; 
 }
 
 inline int Time::GetSecond() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     localtime_s(&t, &m_time);
-    return t.tm_sec + 1; 
 #else
-    return localtime(&m_time)->tm_sec; 
-#endif 
+	localtime_r(&m_time, &t);
+#endif
+	return t.tm_sec; 
 }
 
 inline int Time::GetDayOfWeek() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     localtime_s(&t, &m_time);
-    return t.tm_wday + 1;
 #else
-    return localtime(&m_time)->tm_wday;
+	localtime_r(&m_time, &t);
 #endif
+	return t.tm_wday + 1;
 }
 
 inline int Time::GetDayOfMonth() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     localtime_s(&t, &m_time);
-    return t.tm_mday + 1;
 #else
-    return localtime(&m_time)->tm_mday + 1;
+	localtime_r(&m_time, &t);
 #endif
+	return t.tm_mday;
 }
 
 inline int Time::GetDayOfYear() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     localtime_s(&t, &m_time);
-    return t.tm_yday + 1;
 #else
-    return localtime(&m_time)->tm_yday + 1;
+	localtime_r(&m_time, &t);
 #endif
+	return t.tm_yday + 1;
 }
 
 inline int Time::GetUTCYear() const
-{ 
+{
+	tm t;
 #ifdef _WIN32
-    tm t;
     gmtime_s(&t, &m_time);
-    return t.tm_year + 1900; 
 #else
-    return (gmtime(&m_time)->tm_year) + 1900;
+	gmtime_r(&m_time, &t);
 #endif
+	return t.tm_year + 1900;
 }
 
 inline int Time::GetUTCMonth() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     gmtime_s(&t, &m_time);
-    return t.tm_mon + 1; 
 #else
-    return gmtime(&m_time)->tm_mon + 1; 
+	gmtime_r(&m_time, &t);
 #endif
+	return t.tm_mon + 1;
 }
 
 inline int Time::GetUTCDay() const
-{ 
+{
+	tm t;
 #ifdef _WIN32
-    tm t;
     gmtime_s(&t, &m_time);
-    return t.tm_mday + 1; 
 #else
-    return gmtime(&m_time)->tm_mday; 
+	gmtime_r(&m_time, &t);
 #endif
+	return t.tm_mday; 
 }
 
 inline int Time::GetUTCHour() const
-{ 
+{
+	tm t;
 #ifdef _WIN32
-    tm t;
     gmtime_s(&t, &m_time);
-    return t.tm_hour + 1; 
 #else
-    return gmtime(&m_time)->tm_hour; 
+	gmtime_r(&m_time, &t);
 #endif
+	return t.tm_hour; 
 }
 
 inline int Time::GetUTCMinute() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     gmtime_s(&t, &m_time);
-    return t.tm_min + 1; 
 #else
-    return gmtime(&m_time)->tm_min;
+	gmtime_r(&m_time, &t);
 #endif
+	return t.tm_min; 
 }
 
 inline int Time::GetUTCSecond() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     gmtime_s(&t, &m_time);
-    return t.tm_sec + 1; 
 #else
-    return gmtime(&m_time)->tm_sec; 
+	gmtime_r(&m_time, &t);
 #endif
+	return t.tm_sec; 
 }
 
 inline int Time::GetUTCDayOfWeek() const
 { 
+	tm t;
 #ifdef _WIN32
-    tm t;
     gmtime_s(&t, &m_time);
-    return t.tm_wday + 1; 
 #else
-    return gmtime(&m_time)->tm_wday + 1; 
+	gmtime_r(&m_time, &t);
 #endif
+	return t.tm_wday + 1; 
 }
 
 inline int Time::GetUTCDayOfMonth() const
 {
+	tm t;
 #ifdef _WIN32
-    tm t;
     gmtime_s(&t, &m_time);
-    return t.tm_mday + 1; 
 #else
-    return gmtime(&m_time)->tm_mday + 1; 
+	gmtime_r(&m_time, &t);
 #endif
+	return t.tm_mday; 
 }
 
 inline int Time::GetUTCDayOfYear() const
 {
+	tm t;
 #ifdef _WIN32
-    tm t;
     gmtime_s(&t, &m_time);
-    return t.tm_yday + 1; 
 #else
-    return gmtime(&m_time)->tm_yday + 1; 
+	gmtime_r(&m_time, &t);
 #endif
+	return t.tm_yday + 1; 
 }
 
 inline TimeSpan Time::operator - (const Time& time) const
