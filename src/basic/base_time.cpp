@@ -1,9 +1,11 @@
 #include "milli_time.h"
 #include "base_def.h"
-//#include "except.h"
+#include "except.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+using namespace std;
 
 #define _MAX__TIME64_T     0x793406fffLL 
 
@@ -59,7 +61,10 @@ bool Time::SetUTCTime (int nYear, int nMonth, int nDay, int nHour, int nMin, int
 {
     if ((nDay >= 1 && nDay <= 31)
         && (nMonth >= 1 && nMonth <= 12)
-        && (nYear >= 1900))
+        && (nYear >= 1900)
+		&& (nHour >= 0 && nHour <= 23)
+		&& (nMin >= 0 && nMin <= 59)
+		&& (nSec >= 0 && nSec <= 59))
     {
         m_time = linux_mktime (nYear, nMonth, nDay, nHour, nMin, nSec);
         return true;
@@ -147,6 +152,21 @@ string Time::ToUTCString() const
 
 string Time::DateToString() const
 {
+	char szTime[100] = { 0 };
+	if (m_time > 0 && m_time <= _MAX__TIME64_T)
+	{
+#ifdef _WIN32
+		sprintf_s(szTime, 100, "%4d%02d%02d", GetYear(), GetMonth(), GetDay());
+#else
+		sprintf(szTime, "%4d%02d%02d", GetYear(), GetMonth(), GetDay());
+#endif
+	}
+
+	return string(szTime);
+}
+
+string Time::UTCDateToString() const
+{
 	char szTime[100] = {0};
 	if (m_time > 0 && m_time <= _MAX__TIME64_T )
 	{
@@ -174,6 +194,22 @@ string Time::TimeToString() const
 
 	return string(szTime);
 }
+
+string Time::UTCTimeToString() const
+{
+	char szTime[100] = { 0 };
+	if (m_time > 0 && m_time <= _MAX__TIME64_T)
+	{
+#ifdef _WIN32
+		sprintf_s(szTime, 100, "%02d%02d%02d", GetUTCHour(), GetUTCMinute(), GetUTCSecond());
+#else
+		sprintf(szTime, "%02d%02d%02d", GetUTCHour(), GetUTCMinute(), GetUTCSecond());
+#endif
+	}
+
+	return string(szTime);
+}
+
 /************************************************************************/
 /* MilliTime */
 /************************************************************************/
@@ -240,7 +276,7 @@ std::wstring MilliTime::ToUTCStringW()
 }
 
 #ifdef _WIN32
-//#define my_wcstok wcstok
+// 自定义字符拆分函数
 wchar_t* my_wcstok(wchar_t *wcs, const wchar_t *delim)
 {
     static wchar_t *state = NULL;
@@ -267,7 +303,8 @@ wchar_t *my_wcstok(wchar_t *wcs, const wchar_t *delim)
 
 char* my_strtok(char* cs, const char* delim)
 {
-    return strtok(cs, delim);
+	static char *state = NULL;
+    return strtok_r(cs, delim, &state);
 }
 #endif // _WIN32
 
@@ -407,7 +444,7 @@ void MilliTime::SetUTCByStringW (const wchar_t* str)
     }
     else
     {
-        //throw Except (DATETIME_FMT, "Datetime format error. used as yyyy-mm-dd HH:MM:SS.xxxx");
+        throw Except (DATETIME_FMT, "Datetime format error. used as yyyy-mm-dd HH:MM:SS.xxxx");
     }
 }
                 
@@ -421,7 +458,7 @@ void MilliTime::SetLocalByStringW (const wchar_t* str)
     }
     else
     {
-        //throw Except (DATETIME_FMT, "Datetime format error. used as yyyy-mm-dd HH:MM:SS.xxxx");
+        throw Except (DATETIME_FMT, "Datetime format error. used as yyyy-mm-dd HH:MM:SS.xxxx");
     }
 }
 
@@ -435,7 +472,7 @@ void MilliTime::SetUTCByStringA(const char * str)
     }
 	else
 	{
-		//throw Except (DATETIME_FMT, "Datetime format error. used as yyyy-mm-dd HH:MM:SS.xxxx");
+		throw Except (DATETIME_FMT, "Datetime format error. used as yyyy-mm-dd HH:MM:SS.xxxx");
 	}
 }
 
@@ -449,6 +486,6 @@ void MilliTime::SetLocalByStringA(const char * str)
     }
 	else
 	{
-		//throw Except (DATETIME_FMT, "Datetime format error. used as yyyy-mm-dd HH:MM:SS.xxxx");
+		throw Except (DATETIME_FMT, "Datetime format error. used as yyyy-mm-dd HH:MM:SS.xxxx");
 	}
 }

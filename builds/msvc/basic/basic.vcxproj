@@ -19,6 +19,7 @@
     <ClInclude Include="..\..\..\include\basic.h" />
     <ClInclude Include="..\..\..\include\basic\base_def.h" />
     <ClInclude Include="..\..\..\include\basic\base_time.h" />
+    <ClInclude Include="..\..\..\include\basic\except.h" />
     <ClInclude Include="..\..\..\include\basic\milli_time.h" />
     <ClInclude Include="..\..\..\include\basic\mutex.h" />
     <ClInclude Include="..\..\..\include\basic\thread_base.h" />

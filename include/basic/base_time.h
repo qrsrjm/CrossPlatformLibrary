@@ -9,8 +9,6 @@
 #include <windows.h>
 #endif
 
-using namespace std;
-
 class BASE_EXPORT TimeSpan
 {
 public:
@@ -58,10 +56,12 @@ public:
     void GetUTCTime(int &nYear, int &nMonth, int &nDay, int &nHour, int &nMin, int &nSec) const;
     void GetLocalTm(struct tm* localtime) const;
     void GetGmTm(struct tm* gm) const;
-	string ToString() const;
-	string ToUTCString() const;
-	string DateToString() const;
-	string TimeToString() const;
+	std::string ToString() const;
+	std::string ToUTCString() const;
+	std::string DateToString() const;
+	std::string UTCDateToString() const;
+	std::string TimeToString() const;
+	std::string UTCTimeToString() const;
 
     time_t GetTime() const;
 

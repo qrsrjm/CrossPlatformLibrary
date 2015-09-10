@@ -47,5 +47,8 @@
     <ClInclude Include="..\..\..\include\basic\base_def.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\basic\except.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
