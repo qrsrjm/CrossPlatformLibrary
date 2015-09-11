@@ -45,7 +45,7 @@ Time::Time(int nYear, int nMonth, int nDay, int nHour, int nMin, int nSec)
 {
     if (SetUTCTime (nYear, nMonth, nDay, nHour, nMin, nSec))
     {
-#ifdef _WIN32
+#ifdef WIN32
         _tzset ();
         long timezone;
         _get_timezone(&timezone);
@@ -77,7 +77,7 @@ bool Time::SetUTCTime (int nYear, int nMonth, int nDay, int nHour, int nMin, int
 
 void Time::GetLocalTm(struct tm* lc) const
 {
-#ifdef _WIN32
+#ifdef WIN32
     localtime_s(lc, &m_time);
 #else
 	localtime_r(&m_time, lc);
@@ -86,7 +86,7 @@ void Time::GetLocalTm(struct tm* lc) const
 
 void Time::GetGmTm (struct tm* gm) const
 {
-#ifdef _WIN32
+#ifdef WIN32
     gmtime_s(gm, &m_time);
 #else
 	gmtime_r(&m_time, gm);
@@ -119,7 +119,7 @@ string Time::ToString() const
     char szTime[100] = {0};
     if (m_time > 0 && m_time <= _MAX__TIME64_T )
     {
-#ifdef _WIN32
+#ifdef WIN32
         sprintf_s(szTime, 100, "%4d-%02d-%02d %02d:%02d:%02d",
             GetYear(), GetMonth(), GetDay(),
             GetHour(), GetMinute(), GetSecond());
@@ -137,7 +137,7 @@ string Time::ToUTCString() const
     char szTime[100] = {0};
     if (m_time > 0 && m_time <= _MAX__TIME64_T )
     {
-#ifdef _WIN32
+#ifdef WIN32
         sprintf_s(szTime, 100, "%4d-%02d-%02d %02d:%02d:%02d",
             GetUTCYear(), GetUTCMonth(), GetUTCDay(),
             GetUTCHour(), GetUTCMinute(), GetUTCSecond());
@@ -155,7 +155,7 @@ string Time::DateToString() const
 	char szTime[100] = { 0 };
 	if (m_time > 0 && m_time <= _MAX__TIME64_T)
 	{
-#ifdef _WIN32
+#ifdef WIN32
 		sprintf_s(szTime, 100, "%4d%02d%02d", GetYear(), GetMonth(), GetDay());
 #else
 		sprintf(szTime, "%4d%02d%02d", GetYear(), GetMonth(), GetDay());
@@ -170,7 +170,7 @@ string Time::UTCDateToString() const
 	char szTime[100] = {0};
 	if (m_time > 0 && m_time <= _MAX__TIME64_T )
 	{
-#ifdef _WIN32
+#ifdef WIN32
 		sprintf_s(szTime, 100, "%4d%02d%02d", GetUTCYear(), GetUTCMonth(), GetUTCDay());
 #else
 		sprintf(szTime, "%4d%02d%02d",	GetUTCYear(), GetUTCMonth(), GetUTCDay());
@@ -185,7 +185,7 @@ string Time::TimeToString() const
  	char szTime[100] = {0};
  	if (m_time > 0 && m_time <= _MAX__TIME64_T )
  	{
-#ifdef _WIN32
+#ifdef WIN32
  		sprintf_s(szTime, 100, "%02d%02d%02d", GetHour(), GetMinute(), GetSecond());
 #else
  		sprintf(szTime, "%02d%02d%02d",	GetHour(), GetMinute(), GetSecond());
@@ -200,7 +200,7 @@ string Time::UTCTimeToString() const
 	char szTime[100] = { 0 };
 	if (m_time > 0 && m_time <= _MAX__TIME64_T)
 	{
-#ifdef _WIN32
+#ifdef WIN32
 		sprintf_s(szTime, 100, "%02d%02d%02d", GetUTCHour(), GetUTCMinute(), GetUTCSecond());
 #else
 		sprintf(szTime, "%02d%02d%02d", GetUTCHour(), GetUTCMinute(), GetUTCSecond());
@@ -218,7 +218,7 @@ std::string MilliTime::ToStringA ()
     char szTime[100] = {0};
     if (m_time > 0 && m_time <= _MAX__TIME64_T)
     {
-#ifdef _WIN32
+#ifdef WIN32
         sprintf_s(szTime, 100, "%04d-%02d-%02d %02d:%02d:%02d.%03d", 
             GetYear(), GetMonth(), GetDay(),
             GetHour(), GetMinute(), GetSecond(), GetMillisecond());
@@ -249,7 +249,7 @@ std::string MilliTime::ToUTCStringA()
     char szTime[100] = {0};
     if (m_time > 0 && m_time <= _MAX__TIME64_T)
     {
-#ifdef _WIN32
+#ifdef WIN32
         sprintf_s(szTime, 100, "%04d-%02d-%02d %02d:%02d:%02d.%03d", 
             GetUTCYear(), GetUTCMonth(), GetUTCDay(),
             GetUTCHour(), GetUTCMinute(), GetUTCSecond(), GetMillisecond());
@@ -275,7 +275,7 @@ std::wstring MilliTime::ToUTCStringW()
     return buf;
 }
 
-#ifdef _WIN32
+#ifdef WIN32
 // 自定义字符拆分函数
 wchar_t* my_wcstok(wchar_t *wcs, const wchar_t *delim)
 {
@@ -288,7 +288,7 @@ char* my_strtok(char* cs, const char* delim)
     static char* state = NULL;
     return strtok_s(cs, delim, &state);
 }
-#else // _WIN32
+#else // WIN32
 long _wtoi(const wchar_t *ptr)
 {
     wchar_t *end_ptr = NULL;
@@ -306,7 +306,7 @@ char* my_strtok(char* cs, const char* delim)
 	static char *state = NULL;
     return strtok_r(cs, delim, &state);
 }
-#endif // _WIN32
+#endif // WIN32
 
 bool MilliTime::ParseStrW (const wchar_t* str_in, int &nYear, int &nMonth, int &nDay, int &nHour, int &nMin, int &nSec, int &nMilli)
 {

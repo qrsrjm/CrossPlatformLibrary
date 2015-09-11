@@ -5,7 +5,7 @@
 #include <time.h>
 #include <string>
 
-#ifdef _WIN32
+#ifdef WIN32
 #include <windows.h>
 #endif
 
@@ -221,7 +221,7 @@ inline time_t Time::GetTime() const
 inline int Time::GetYear() const
 {
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     localtime_s(&t, &m_time);
 #else
 	localtime_r(&m_time, &t);
@@ -232,7 +232,7 @@ inline int Time::GetYear() const
 inline int Time::GetMonth() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     localtime_s(&t, &m_time);
 #else
 	localtime_r(&m_time, &t);
@@ -243,7 +243,7 @@ inline int Time::GetMonth() const
 inline int Time::GetDay() const
 {
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     localtime_s(&t, &m_time);
 #else
 	localtime_r(&m_time, &t);
@@ -254,7 +254,7 @@ inline int Time::GetDay() const
 inline int Time::GetHour() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     localtime_s(&t, &m_time);
 #else
 	localtime_r(&m_time, &t);
@@ -265,7 +265,7 @@ inline int Time::GetHour() const
 inline int Time::GetMinute() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     localtime_s(&t, &m_time);
 #else
 	localtime_r(&m_time, &t);
@@ -276,7 +276,7 @@ inline int Time::GetMinute() const
 inline int Time::GetSecond() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     localtime_s(&t, &m_time);
 #else
 	localtime_r(&m_time, &t);
@@ -287,7 +287,7 @@ inline int Time::GetSecond() const
 inline int Time::GetDayOfWeek() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     localtime_s(&t, &m_time);
 #else
 	localtime_r(&m_time, &t);
@@ -298,7 +298,7 @@ inline int Time::GetDayOfWeek() const
 inline int Time::GetDayOfMonth() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     localtime_s(&t, &m_time);
 #else
 	localtime_r(&m_time, &t);
@@ -309,7 +309,7 @@ inline int Time::GetDayOfMonth() const
 inline int Time::GetDayOfYear() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     localtime_s(&t, &m_time);
 #else
 	localtime_r(&m_time, &t);
@@ -320,7 +320,7 @@ inline int Time::GetDayOfYear() const
 inline int Time::GetUTCYear() const
 {
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     gmtime_s(&t, &m_time);
 #else
 	gmtime_r(&m_time, &t);
@@ -331,7 +331,7 @@ inline int Time::GetUTCYear() const
 inline int Time::GetUTCMonth() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     gmtime_s(&t, &m_time);
 #else
 	gmtime_r(&m_time, &t);
@@ -342,7 +342,7 @@ inline int Time::GetUTCMonth() const
 inline int Time::GetUTCDay() const
 {
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     gmtime_s(&t, &m_time);
 #else
 	gmtime_r(&m_time, &t);
@@ -353,7 +353,7 @@ inline int Time::GetUTCDay() const
 inline int Time::GetUTCHour() const
 {
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     gmtime_s(&t, &m_time);
 #else
 	gmtime_r(&m_time, &t);
@@ -364,7 +364,7 @@ inline int Time::GetUTCHour() const
 inline int Time::GetUTCMinute() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     gmtime_s(&t, &m_time);
 #else
 	gmtime_r(&m_time, &t);
@@ -375,7 +375,7 @@ inline int Time::GetUTCMinute() const
 inline int Time::GetUTCSecond() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     gmtime_s(&t, &m_time);
 #else
 	gmtime_r(&m_time, &t);
@@ -386,7 +386,7 @@ inline int Time::GetUTCSecond() const
 inline int Time::GetUTCDayOfWeek() const
 { 
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     gmtime_s(&t, &m_time);
 #else
 	gmtime_r(&m_time, &t);
@@ -397,7 +397,7 @@ inline int Time::GetUTCDayOfWeek() const
 inline int Time::GetUTCDayOfMonth() const
 {
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     gmtime_s(&t, &m_time);
 #else
 	gmtime_r(&m_time, &t);
@@ -408,7 +408,7 @@ inline int Time::GetUTCDayOfMonth() const
 inline int Time::GetUTCDayOfYear() const
 {
 	tm t;
-#ifdef _WIN32
+#ifdef WIN32
     gmtime_s(&t, &m_time);
 #else
 	gmtime_r(&m_time, &t);

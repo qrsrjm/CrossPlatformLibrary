@@ -1,7 +1,7 @@
 #ifndef BASE_DEFINE_H
 #define BASE_DEFINE_H
 
-#if defined _WIN32
+#if defined WIN32
 #   if defined _LIB
 #       define BASE_EXPORT
 #   elif defined _DLL

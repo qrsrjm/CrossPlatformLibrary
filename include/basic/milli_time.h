@@ -196,7 +196,7 @@ inline bool MilliTimeSpan::operator>=(const MilliTimeSpan& timeSpan) const
     return (m_timeSpan == timeSpan.m_timeSpan)    ? (m_nMilli >= timeSpan.m_nMilli) : (m_timeSpan >= timeSpan.m_timeSpan); 
 }
 
-#ifndef _WIN32
+#ifndef WIN32
 #include <sys/time.h>
 #endif
 /************************************************************************/
@@ -204,7 +204,7 @@ inline bool MilliTimeSpan::operator>=(const MilliTimeSpan& timeSpan) const
 /************************************************************************/
 inline MilliTime::MilliTime()
 { 
-#ifdef _WIN32
+#ifdef WIN32
     SYSTEMTIME   st; 
     GetLocalTime(&st);
     m_nMilli = st.wMilliseconds;
@@ -212,7 +212,7 @@ inline MilliTime::MilliTime()
     struct timeval nowtimeval;
     gettimeofday(&nowtimeval,0);
     m_nMilli = nowtimeval.tv_usec/1000;
-    m_time = nowtimeval.tv_sec;
+    //m_time = nowtimeval.tv_sec;
 #endif
 }
 
