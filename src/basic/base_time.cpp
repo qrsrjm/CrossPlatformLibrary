@@ -1,5 +1,4 @@
-#include "milli_time.h"
-#include "base_def.h"
+#include "base_time.h"
 #include "except.h"
 #include <stdio.h>
 #include <string.h>
@@ -28,9 +27,9 @@ static inline unsigned long linux_mktime (
 }
 
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+/************************************************************************/
+/* Time定义 */
+/************************************************************************/
 Time::Time()
 {
     m_time = time(NULL);
@@ -211,7 +210,7 @@ string Time::UTCTimeToString() const
 }
 
 /************************************************************************/
-/* MilliTime */
+/* MilliTime定义 */
 /************************************************************************/
 std::string MilliTime::ToStringA ()
 {
@@ -288,7 +287,7 @@ char* my_strtok(char* cs, const char* delim)
     static char* state = NULL;
     return strtok_s(cs, delim, &state);
 }
-#else // WIN32
+#else
 long _wtoi(const wchar_t *ptr)
 {
     wchar_t *end_ptr = NULL;

@@ -19,11 +19,10 @@
     <ClInclude Include="..\..\..\include\basic.h" />
     <ClInclude Include="..\..\..\include\basic\base_def.h" />
     <ClInclude Include="..\..\..\include\basic\base_time.h" />
+    <ClInclude Include="..\..\..\include\basic\err.h" />
     <ClInclude Include="..\..\..\include\basic\except.h" />
-    <ClInclude Include="..\..\..\include\basic\milli_time.h" />
     <ClInclude Include="..\..\..\include\basic\mutex.h" />
     <ClInclude Include="..\..\..\include\basic\thread_base.h" />
-    <ClInclude Include="..\..\..\src\basic\err.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E3181095-98B2-4DB3-89C6-8A3FF3F67B1F}</ProjectGuid>

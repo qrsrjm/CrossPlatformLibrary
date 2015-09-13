@@ -1,6 +1,7 @@
 #ifndef ERR_INCLUDED_H
 #define ERR_INCLUDED_H
 
+#include "base_def.h"
 #include <assert.h>
 #include <errno.h>
 #include <string.h>
@@ -8,10 +9,10 @@
 #include <stdio.h>
 
 #ifdef WIN32
-#include "windows.h"
+#include <windows.h>
 #endif
 
-void SafeAbort(const char *errMsg);
+void BASE_EXPORT SafeAbort(const char *errMsg);
 
 // 基本的断言，与assert功能类似
 #define BASE_ASSERT(x) \

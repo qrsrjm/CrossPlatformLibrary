@@ -2,8 +2,8 @@
 #define _BASE_H
 
 #include "basic/thread_base.h"
-//#include "basic/except.h"
-#include "basic/milli_time.h"
+#include "basic/except.h"
+#include "basic/base_time.h"
 
 #ifdef WIN32
 #pragma comment(lib,"basic.lib") 
