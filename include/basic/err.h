@@ -28,7 +28,7 @@ void BASE_EXPORT SafeAbort(const char *errMsg);
 #ifdef WIN32
 
 // 将GetLastError对应的错误代码转换为错误信息
-void WinError(char *buffer, size_t bufferSize);
+void BASE_EXPORT WinError(char *buffer, size_t bufferSize);
 
 // Windows下的GetLastError样式的错误断言
 #define WIN_ASSERT(x) \

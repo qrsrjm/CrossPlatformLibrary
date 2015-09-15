@@ -6,7 +6,6 @@
 #include "zmq_worker.h"
 #include <vector>
 
-class ZmqUtil;
 class REMOTE_EXPORT ZmqServer : public ThreadBase
 {
 public:
