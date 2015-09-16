@@ -1,5 +1,6 @@
 #include "zmq/zmq.h"
 #include "zmq_server.h"
+#include "zmq_worker.h"
 
 #include <iostream>
 #include <sstream>

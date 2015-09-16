@@ -4,6 +4,8 @@
 #include "basic.h"
 #include "remote_def.h"
 
+class ZmqMsg;
+
 class ZmqWorker :
 	public ThreadBase
 {
@@ -14,7 +16,7 @@ public:
 	virtual void Run();
 
 private:
-    void HandleClientRequest(void *request, void *reply);
+	void HandleClientRequest(ZmqMsg *request, ZmqMsg *reply);
 
 private:
 	void *m_context;

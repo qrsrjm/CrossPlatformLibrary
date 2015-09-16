@@ -23,6 +23,11 @@ const int REMOTE_NOERROR      = 0;       // 无错误
 
 const int REMOTE_MODEL = 0x7000;
 
-const int ERR_REMOTE_BIND       = REMOTE_MODEL + 0x001;   // 绑定地址失败
+const int ERR_REMOTE_BIND         = REMOTE_MODEL + 0x001;   // 绑定地址失败
+const int ERR_REMOTE_NOT_INIT     = REMOTE_MODEL + 0x002;   // 未初始化
+const int ERR_REMOTE_SOCKET_ERROR = REMOTE_MODEL + 0x003;   // SOCKET错误
+const int ERR_REMOTE_TIMEOUT      = REMOTE_MODEL + 0x004;   // 请求超时
+const int ERR_REMOTE_CONN_FAILED  = REMOTE_MODEL + 0x005;   // 连接失败
+
 
 #endif

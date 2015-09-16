@@ -3,8 +3,13 @@
 
 #include "remote_def.h"
 #include "basic.h"
-#include "zmq_worker.h"
 #include <vector>
+
+class ZmqWorker;
+
+// 下面两行代码是为解决C4251警告
+template class REMOTE_EXPORT std::vector < ZmqWorker * >;
+template class REMOTE_EXPORT std::allocator < ZmqWorker * >;
 
 class REMOTE_EXPORT ZmqServer : public ThreadBase
 {

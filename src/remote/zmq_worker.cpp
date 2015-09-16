@@ -1,5 +1,6 @@
 #include "zmq/zmq.h"
 #include "zmq_worker.h"
+#include "zmq_msg.h"
 #include <string.h>
 
 ZmqWorker::ZmqWorker(void* context)
@@ -20,13 +21,11 @@ void ZmqWorker::Run()
     while (!IsBreak())
     {
         int ret;
+		// 使用poll机制而不是阻塞等待的原因是让线程有机会退出
 		if ((ret = zmq_poll(&pollItem, 1, 1000)) <= 0)
 		{
 			// 读取超时
-			if (ret == 0)
-			{
-				continue;
-			}
+			if (ret == 0) {	continue; }
 
 			// 上下文被关闭，安全退出
 			if (ETERM == errno)
@@ -41,9 +40,9 @@ void ZmqWorker::Run()
 			ERRNO_ASSERT(0);
 		}
 
-		zmq_msg_t reqMsg, repMsg;
+		ZmqMsg requestMsg, replyMsg;
 
-		if (zmq_recvmsg(receiver, &reqMsg, 0) < 0)
+		if (zmq_recvmsg(receiver, requestMsg.GetMsg(), 0) < 0)
 		{
 			// 上下文被关闭，安全退出
 			if (ETERM == errno)
@@ -58,9 +57,9 @@ void ZmqWorker::Run()
 			ERRNO_ASSERT(0);
 		}
 
-		HandleClientRequest(&reqMsg, &repMsg);
+		HandleClientRequest(&requestMsg, &replyMsg);
 
-		if (zmq_sendmsg(receiver, &repMsg, 0) < 0)
+		if (zmq_sendmsg(receiver, replyMsg.GetMsg(), 0) < 0)
 		{
 			// 上下文被关闭，安全退出
 			if (ETERM == errno)
@@ -79,7 +78,7 @@ void ZmqWorker::Run()
     zmq_close(receiver);
 }
 
-void ZmqWorker::HandleClientRequest(void *request, void *reply)
+void ZmqWorker::HandleClientRequest(ZmqMsg *request, ZmqMsg *reply)
 {
     
 }

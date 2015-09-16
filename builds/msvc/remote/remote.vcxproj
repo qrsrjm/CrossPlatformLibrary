@@ -88,10 +88,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\include\remote.h" />
     <ClInclude Include="..\..\..\include\remote\remote_def.h" />
+    <ClInclude Include="..\..\..\include\remote\remote_object.h" />
+    <ClInclude Include="..\..\..\include\remote\zmq_msg.h" />
     <ClInclude Include="..\..\..\include\remote\zmq_server.h" />
     <ClInclude Include="..\..\..\src\remote\zmq_worker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\remote\remote_object.cpp" />
+    <ClCompile Include="..\..\..\src\remote\zmq_msg.cpp" />
     <ClCompile Include="..\..\..\src\remote\zmq_server.cpp" />
     <ClCompile Include="..\..\..\src\remote\zmq_worker.cpp" />
   </ItemGroup>
